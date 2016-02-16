@@ -50,3 +50,40 @@ myModule.updateMyConfig({
 
 // Outputs: Caching is: disabled
 myModule.reportMyConfig();
+
+// Module pattern
+// -----------------------------------------------------------------------------
+// Here, other parts of the code are unable to directly read the value of our
+// incrementCounter() or resetCounter(). The counter variable is actually fully
+// shielded from our global scope so it acts just like a private variable would
+// - its existence is limited to within the module's closure so that the only
+// code able to access its scope are our two functions. Our methods are
+// effectively namespaced so in the test section of our code, we need to prefix
+// any calls with the name of the module
+
+var testModule = (function () {
+
+  var counter = 0;
+
+  return {
+
+    incrementCounter: function () {
+      return counter++;
+    },
+
+    resetCounter: function () {
+      console.log( "counter value prior to reset: " + counter );
+      counter = 0;
+    }
+  };
+
+})();
+
+// Usage:
+
+// Increment our counter
+testModule.incrementCounter();
+
+// Check the counter value and reset
+// Outputs: counter value prior to reset: 1
+testModule.resetCounter();
